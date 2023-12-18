@@ -1,0 +1,1274 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "organizations-service",
+    "version": "0.0.1",
+    "description": "Merged API. Admin API: https://admin.api.(STAGE).ksbguard.net Public API: https://api.(STAGE).ksbguard.net",
+    "license": {
+      "name": "UNLICENSED"
+    },
+    "contact": {}
+  },
+  "servers": [
+    {
+      "url": "https://admin.api.ksbguard.net/organization/"
+    }
+  ],
+  "paths": {
+    "/AdminAPI /organizations/{organizationId}": {
+      "delete": {
+        "operationId": "AdminDeleteOrganization",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "description": "Delete organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminDeleteOrganizationFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "get": {
+        "operationId": "AdminGetOrganization",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrganizationData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        },
+        "description": "Every Organization can only access its own data",
+        "summary": "Returns one specific organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "organization id",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminGetOrganizationFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "put": {
+        "operationId": "AdminPutOrganizations",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrganizationData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        },
+        "description": "Access limited to KSB Admin Panel",
+        "summary": "Updates one specific organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "organization id",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Changeable Organization Data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IOrganizationData"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminPutOrganizationFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "head": {
+        "operationId": "GetOrganization",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrganizationData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        },
+        "description": "Every Organization can only access its own data",
+        "summary": "Returns one specific organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "organization id",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "HeadOrganizationFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "description": "organization id",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'DELETE,GET,PUT,HEAD,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AdminAPI /organizations": {
+      "get": {
+        "operationId": "AdminGetList",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/OrganizationListItemAdminResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          }
+        },
+        "description": "Access limited to KSB Admin Panel",
+        "summary": "Returns all organizations",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminGetOrganizationListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "post": {
+        "operationId": "AdminPostOrganizations",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrganizationData"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrganizationData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          }
+        },
+        "description": "Access limited to KSB Admin Panel",
+        "summary": "Creates an organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Access limited to KSB Admin Panel",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IOrganizationData"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminPostOrganizationFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organizationId}/contactPerson": {
+      "get": {
+        "operationId": "GetContactPerson",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IContactPersonData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        },
+        "description": "Every Organization can only access its own data",
+        "summary": "Returns the contact person one specific organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "Organization Data that can be set",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetContactPersonFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "put": {
+        "operationId": "UpdateContactPerson",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IContactPersonData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        },
+        "description": "Every Organization can only access its own data",
+        "summary": "Updates the contact person of one specific organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "organization id",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Changeable Contact Person Data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IContactPersonData"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PutContactPersonFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "description": "organization id",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organizationId}": {
+      "get": {
+        "operationId": "GetOrganization1",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrganizationData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        },
+        "description": "Every Organization can only access its own data",
+        "summary": "Returns one specific organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "organization id",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetOrganizationFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "put": {
+        "operationId": "UpdateOrganization",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrganizationData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        },
+        "description": "Every Organization can only access its own data",
+        "summary": "Updates one specific organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "organization id",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Changeable Organization Data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IOrganizationData"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PutOrganizationFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "head": {
+        "operationId": "GetOrganization2",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrganizationData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        },
+        "description": "Every Organization can only access its own data",
+        "summary": "Returns one specific organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "organization id",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "HeadOrganizationFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "description": "organization id",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,PUT,HEAD,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations": {
+      "get": {
+        "operationId": "GetOrganizationList",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/IOrganizationListItem"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "description": "Every Organization can only access its own data",
+        "summary": "Returns all organizations",
+        "deprecated": true,
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetOrganizationListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "post": {
+        "operationId": "PostOrganization",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrganizationData"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrganizationData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials"
+          }
+        },
+        "description": "Access limited to KSB Admin Panel",
+        "summary": "Creates an organization",
+        "deprecated": true,
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Organization Data that can be set",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IOrganizationData"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PostOrganizationFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OrganizationType": {
+        "enum": [
+          "cooperation",
+          "subsidiary",
+          "business unit",
+          "department",
+          "division",
+          "sub-divsion"
+        ],
+        "type": "string"
+      },
+      "IContactPersonData": {
+        "properties": {
+          "phoneNumber": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "phoneNumber",
+          "email",
+          "name"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "IOrganizationData": {
+        "properties": {
+          "organizationId": {
+            "type": "string"
+          },
+          "organizationType": {
+            "$ref": "#/components/schemas/OrganizationType"
+          },
+          "description": {
+            "type": "string"
+          },
+          "organizationName": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "contactPerson": {
+            "$ref": "#/components/schemas/IContactPersonData"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "organizationType",
+          "description",
+          "organizationName",
+          "contactPerson"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "IOrganizationListItem": {
+        "properties": {
+          "organizationId": {
+            "type": "string"
+          },
+          "organizationType": {
+            "$ref": "#/components/schemas/OrganizationType"
+          },
+          "description": {
+            "type": "string"
+          },
+          "organizationName": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "organizationType",
+          "description",
+          "organizationName"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "PickIOrganizationDatapostalCode": {
+        "properties": {
+          "postalCode": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "description": "From T, pick a set of properties whose keys are in the union K"
+      },
+      "OrganizationListItemAdminResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/IOrganizationListItem"
+          },
+          {
+            "$ref": "#/components/schemas/PickIOrganizationDatapostalCode"
+          }
+        ]
+      }
+    },
+    "responses": {},
+    "parameters": {},
+    "examples": {},
+    "requestBodies": {},
+    "headers": {},
+    "securitySchemes": {
+      "KsbUserPool": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "x-amazon-apigateway-authtype": "cognito_user_pools",
+        "x-amazon-apigateway-authorizer": {
+          "type": "cognito_user_pools",
+          "providerARNs": [
+            {
+              "Fn::Sub": "${KsbUserPoolArn}"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "x-amazon-apigateway-request-validators": {
+    "all": {
+      "validateRequestBody": true,
+      "validateRequestParameters": true
+    },
+    "params-only": {
+      "validateRequestBody": false,
+      "validateRequestParameters": true
+    }
+  },
+  "x-amazon-apigateway-gateway-responses": {
+    "DEFAULT_4XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": {
+          "Fn::Sub": "'${AllowedOrigin}'"
+        }
+      }
+    },
+    "DEFAULT_5XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": {
+          "Fn::Sub": "'${AllowedOrigin}'"
+        }
+      }
+    }
+  },
+  "x-amazon-apigateway-request-validator": "params-only"
+}

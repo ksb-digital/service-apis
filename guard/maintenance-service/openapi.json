@@ -1,0 +1,1215 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "0.0.1",
+    "title": "Maintenance Service",
+    "description": "Merged API. Admin API: https://admin.api.(STAGE).ksbguard.net Public API: https://api.(STAGE).ksbguard.net"
+  },
+  "tags": [
+    {
+      "name": "maintenance",
+      "description": "Collects and manages warning events, sends push notifications and provides pump maintenance histories."
+    }
+  ],
+  "paths": {
+    "/AdminAPI /events": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "maintenance"
+        ],
+        "summary": "Returns an overview of all events.",
+        "description": "List of all threshold warnings from the Guard service.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LanguageHeader"
+          },
+          {
+            "$ref": "#/parameters/ArchiveParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - Event overview list",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/EventList"
+            }
+          },
+          "401": {
+            "description": "Authentication Error - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "No events found",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminGetEventsListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /events/{eventId}": {
+      "options": {
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Event Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}\n"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "maintenance"
+        ],
+        "summary": "Returns one specific event.",
+        "description": "Details for an event.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LanguageHeader"
+          },
+          {
+            "$ref": "#/parameters/ArchiveParameter"
+          },
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Event Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - Event object",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/EventDetail"
+            }
+          },
+          "401": {
+            "description": "Authentication Error - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminGetEventFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /maintenances": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "maintenance"
+        ],
+        "summary": "Returns a maintenance history overview.",
+        "description": "The list of maintenances for a specific pump.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LanguageHeader"
+          },
+          {
+            "$ref": "#/parameters/ArchiveParameter"
+          },
+          {
+            "$ref": "#/parameters/PumpIdRequiredQueryParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - List of maintenances.",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/MaintenanceList"
+            }
+          },
+          "401": {
+            "description": "Authentication Error - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Maintenance history not found",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminGetMaintenancesListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /maintenances/{maintenanceId}": {
+      "options": {
+        "parameters": [
+          {
+            "name": "maintenanceId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Maintenances id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "maintenance"
+        ],
+        "summary": "Returns one specific maintenance",
+        "description": "Details of a maintenances.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LanguageHeader"
+          },
+          {
+            "$ref": "#/parameters/ArchiveParameter"
+          },
+          {
+            "name": "maintenanceId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Maintenances id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - Maintenance object",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/MaintenanceDetail"
+            }
+          },
+          "401": {
+            "description": "Authentication Error - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Maintenance not found",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminGetMaintenanceFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/events": {
+      "options": {
+        "tags": [
+          "cors"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "maintenance"
+        ],
+        "summary": "Returns an overview of all events.",
+        "description": "List of all threshold warnings from the Guard service.",
+        "operationId": "getMaintenanceEvents",
+        "parameters": [
+          {
+            "$ref": "#/parameters/pumpId"
+          },
+          {
+            "$ref": "#/parameters/LanguageHeader"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - Event overview list",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/EventList"
+            }
+          },
+          "401": {
+            "description": "Authentication Error - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "No events found",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetEventsListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/events/{eventId}": {
+      "options": {
+        "tags": [
+          "cors"
+        ],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Event Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}\n"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "maintenance"
+        ],
+        "summary": "Returns one specific event.",
+        "description": "Details for an event.",
+        "operationId": "getMaintenanceEvent",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LanguageHeader"
+          },
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Event Id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/UnitSystem"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - Event object",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/EventDetail"
+            }
+          },
+          "401": {
+            "description": "Authentication Error - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetEventFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/documentations": {
+      "options": {
+        "tags": [
+          "cors"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "post": {
+        "tags": [
+          "maintenance"
+        ],
+        "summary": "Saves the documentation result.",
+        "description": "Stores the actions of a fulfilled documentation.",
+        "operationId": "setDocumentation",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LanguageHeader"
+          },
+          {
+            "$ref": "#/parameters/DocumentationParameter"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created - New created documentation id",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Authentication Error - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PostDocumentationHistoriesFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/maintenances": {
+      "options": {
+        "tags": [
+          "cors"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "maintenance"
+        ],
+        "summary": "Returns a maintenance history overview.",
+        "description": "The list of maintenances for a specific pump.",
+        "operationId": "getMaintenances",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LanguageHeader"
+          },
+          {
+            "$ref": "#/parameters/PumpIdRequiredQueryParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - List of maintenances.",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/MaintenanceList"
+            }
+          },
+          "401": {
+            "description": "Authentication Error - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Maintenance history not found",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetMaintenancesListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/maintenances/{maintenanceId}": {
+      "options": {
+        "tags": [
+          "cors"
+        ],
+        "parameters": [
+          {
+            "name": "maintenanceId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Maintenances id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "maintenance"
+        ],
+        "summary": "Returns one specific maintenance",
+        "description": "Details of a maintenances.",
+        "operationId": "getMaintenance",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LanguageHeader"
+          },
+          {
+            "name": "maintenanceId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Maintenances id"
+          },
+          {
+            "$ref": "#/parameters/UnitSystem"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - Maintenance object",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/MaintenanceDetail"
+            }
+          },
+          "401": {
+            "description": "Authentication Error - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Maintenance not found",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetMaintenanceFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    }
+  },
+  "x-amazon-apigateway-gateway-responses": {
+    "DEFAULT_4XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": {
+          "Fn::Sub": "'${AllowedOrigin}'"
+        }
+      }
+    },
+    "DEFAULT_5XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": {
+          "Fn::Sub": "'${AllowedOrigin}'"
+        }
+      }
+    }
+  }
+}

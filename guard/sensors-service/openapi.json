@@ -1,0 +1,2670 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "0.2.0",
+    "title": "Sensor Service",
+    "description": "Merged API. Admin API: https://admin.api.(STAGE).ksbguard.net Public API: https://api.(STAGE).ksbguard.net"
+  },
+  "tags": [
+    {
+      "name": "sensor"
+    }
+  ],
+  "paths": {
+    "/AdminAPI /sensors/{sensorSerialnumber}/unassign": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorSerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sensor was sucessfully unassigned",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "put": {
+        "tags": [
+          "sensor",
+          "pump"
+        ],
+        "summary": "Unassigns a sensor from a pump",
+        "description": "Unassigns a sensor from a pump",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorSerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "Successful unassign"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PutSensorsUnAssignmentFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /sensors": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "sensor"
+        ],
+        "summary": "Returns all sensors of an organization",
+        "description": "Returns all sensors of an organization",
+        "parameters": [
+          {
+            "$ref": "#/parameters/OrganizationIdQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/SensorIdsQueryParameter"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string",
+            "required": false,
+            "description": "requested language as ISO language code",
+            "default": "en-US"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/ListOfSensors"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetSensorsListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /sensors/{sensorSerialnumber}": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorSerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "sensor"
+        ],
+        "summary": "Returns sensor",
+        "description": "Returns sensor",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorSerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/SensorOverview"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetSensorByIdFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "put": {
+        "tags": [
+          "sensor"
+        ],
+        "summary": "Updates a sensor",
+        "description": "Updates a sensor",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorSerialnumberPathParameter"
+          },
+          {
+            "$ref": "#/parameters/SensorMutablesBodyParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PutSensorByIdFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /sensors/unpaired": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "sensor"
+        ],
+        "summary": "Returns all unpaired sensors",
+        "description": "Returns all unpaired sensors, by checking for pumpId to be undefined/empty",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string",
+            "required": false,
+            "description": "requested language as ISO language code",
+            "default": "en-US"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/ListOfSensors"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetUnpairedSensorsListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /gateways/{gatewaySerialnumber}/stats": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "sensor"
+        ],
+        "summary": "Provide gateways stats for one specific gateway",
+        "description": "Provide gateways stats for one specific gateway",
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          },
+          {
+            "$ref": "#/parameters/StartParameter"
+          },
+          {
+            "$ref": "#/parameters/EndParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/ListOfGatewaysStats"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetGatewayStatsFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /gateways/{gatewaySerialnumber}/vpn": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "put": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "Publishes to gateways timeout to trigger VPN",
+        "description": "Provide gateways stats for one specific gateway",
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          },
+          {
+            "$ref": "#/parameters/GatewayTimeoutTriggerBody"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PutVpnTriggerGatewayFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /gateways/update": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "put": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "The \"Firmware-Update Trigger\" triggers the gateway to search for a new update",
+        "description": "The \"Firmware-Update Trigger\" triggers the gateway to search for a new update",
+        "parameters": [
+          {
+            "$ref": "#/parameters/FirmwareUpdateTriggerGatewayBody"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PutFirmwareUpdateTriggerGatewayFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /gateways": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "Returns all gateways of an organization",
+        "description": "Returns all gateways of an organization",
+        "parameters": [
+          {
+            "$ref": "#/parameters/OrganizationIdQueryParameter"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string",
+            "required": false,
+            "description": "requested language as ISO language code",
+            "default": "en-US"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/ListOfGateways"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetGatewaysListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /gateways/unpaired": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "Returns all unpaired gateways",
+        "description": "Returns all unpaired gateways, by checking for organizationId to be empty",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string",
+            "required": false,
+            "description": "requested language as ISO language code",
+            "default": "en-US"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/ListOfGateways"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetUnpairedGatewaysListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /sensors/{sensorSerialnumber}/resetFirmwareVersion": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorSerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "post": {
+        "tags": [
+          "sensor"
+        ],
+        "summary": "Reset a firmware version",
+        "description": "Reset a firmware version",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorSerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PostSensorByResetFirmwareVersionFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /gateways/{gatewaySerialnumber}/reset-organizationId": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resetting Gateway's OrganizationId",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "put": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "Unassign Gateway",
+        "description": "Reset Gateway OrganizationId",
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ResetOrganizationIdGatewayFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /gateways/reboot": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "Reboots desired Gateway",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "post": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "Reboot Gateway",
+        "description": "Reboot desired Gateway",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AdminPostGatewayRebootBodyDataParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminRebootGatewayFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/AdminAPI /gateways/{gatewaySerialnumber}": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update Gateway",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "put": {
+        "tags": [
+          "gateway"
+        ],
+        "summary": "Update Gateway",
+        "description": "PUT request for Gateway",
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminPutGatewayByIdFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/sensors": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "deprecated": true,
+        "tags": [
+          "sensor",
+          "deprecated"
+        ],
+        "summary": "Returns all sensors of an organization",
+        "description": "Returns all sensors of an organization",
+        "parameters": [
+          {
+            "$ref": "#/parameters/OrganizationIdQueryParameter"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string",
+            "required": false,
+            "description": "requested language as ISO language code",
+            "default": "en-US"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/ListOfSensors"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetSensorsListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/sensors/{sensorSerialnumber}": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorSerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "sensor"
+        ],
+        "summary": "Returns sensor",
+        "description": "Returns sensor",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorSerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/SensorOverview"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetSensorByIdFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "put": {
+        "tags": [
+          "sensor"
+        ],
+        "summary": "Updates a sensor",
+        "description": "Updates a sensor",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorSerialnumberPathParameter"
+          },
+          {
+            "$ref": "#/parameters/SensorMutablesBodyParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PutSensorByIdFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/sensors/unpaired": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "deprecated": true,
+        "tags": [
+          "sensor",
+          "deprecated"
+        ],
+        "summary": "Returns all unpaired sensors",
+        "description": "Returns all unpaired sensors, by checking for pumpId to be undefined/empty",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string",
+            "required": false,
+            "description": "requested language as ISO language code",
+            "default": "en-US"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/ListOfSensors"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetUnpairedSensorsListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/gateways/{gatewaySerialnumber}/stats": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "deprecated": true,
+        "tags": [
+          "sensor",
+          "deprecated"
+        ],
+        "summary": "Provide gateways stats for one specific gateway",
+        "description": "Provide gateways stats for one specific gateway",
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          },
+          {
+            "$ref": "#/parameters/StartParameter"
+          },
+          {
+            "$ref": "#/parameters/EndParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/ListOfGatewaysStats"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetGatewayStatsFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/gateways/{gatewaySerialnumber}/vpn": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "put": {
+        "deprecated": true,
+        "tags": [
+          "deprecated",
+          "gateway"
+        ],
+        "summary": "Publishes to gateways timeout to trigger VPN",
+        "description": "Provide gateways stats for one specific gateway",
+        "parameters": [
+          {
+            "$ref": "#/parameters/GatewaySerialnumberPathParameter"
+          },
+          {
+            "$ref": "#/parameters/GatewayTimeoutTriggerBody"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PutVpnTriggerGatewayFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/gateways/update": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "put": {
+        "deprecated": true,
+        "tags": [
+          "deprecated",
+          "gateway"
+        ],
+        "summary": "The \"Firmware-Update Trigger\" triggers the gateway to search for a new update",
+        "description": "The \"Firmware-Update Trigger\" triggers the gateway to search for a new update",
+        "parameters": [
+          {
+            "$ref": "#/parameters/FirmwareUpdateTriggerGatewayBody"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PutFirmwareUpdateTriggerGatewayFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/gateways": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "deprecated": true,
+        "tags": [
+          "deprecated",
+          "gateway"
+        ],
+        "summary": "Returns all gateways of an organization",
+        "description": "Returns all gateways of an organization",
+        "parameters": [
+          {
+            "$ref": "#/parameters/OrganizationIdQueryParameter"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string",
+            "required": false,
+            "description": "requested language as ISO language code",
+            "default": "en-US"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/ListOfGateways"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetGatewaysListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/gateways/unpaired": {
+      "options": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "deprecated": true,
+        "tags": [
+          "deprecated",
+          "gateway"
+        ],
+        "summary": "Returns all unpaired gateways",
+        "description": "Returns all unpaired gateways, by checking for organizationId to be empty",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string",
+            "required": false,
+            "description": "requested language as ISO language code",
+            "default": "en-US"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/ListOfGateways"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetUnpairedGatewaysListFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    }
+  },
+  "x-amazon-apigateway-gateway-responses": {
+    "DEFAULT_4XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": {
+          "Fn::Sub": "'${AllowedOrigin}'"
+        }
+      }
+    },
+    "DEFAULT_5XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": {
+          "Fn::Sub": "'${AllowedOrigin}'"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,291 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "0.0.1",
+    "title": "Sensor Metrics Service",
+    "description": "Merged API. Admin API: https://admin.api.(STAGE).ksbguard.net Public API: https://api.(STAGE).ksbguard.net"
+  },
+  "tags": [
+    {
+      "name": "sensors-metrics"
+    }
+  ],
+  "paths": {
+    "/AdminAPI /sensors/{sensorId}": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorIdQueryParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "sensor"
+        ],
+        "summary": "Returns sensors information",
+        "description": "Returns sensors information",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorIdQueryParameter"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/SensorsDebugListData"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetSensorsDebugListDataFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/sensors/{sensorId}": {
+      "options": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorIdQueryParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      },
+      "get": {
+        "tags": [
+          "sensor"
+        ],
+        "summary": "Returns sensors information",
+        "description": "Returns sensors information",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SensorIdQueryParameter"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Content-Language": {
+                "type": "string",
+                "description": "response language as ISO language code"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/SensorsDebugListData"
+            }
+          },
+          "401": {
+            "description": "Authentication Error: - Wrong Credentials",
+            "headers": {
+              "X-Api-Version": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetSensorsDebugListDataFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    }
+  },
+  "x-amazon-apigateway-gateway-responses": {
+    "DEFAULT_4XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": {
+          "Fn::Sub": "'${AllowedOrigin}'"
+        }
+      }
+    },
+    "DEFAULT_5XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": {
+          "Fn::Sub": "'${AllowedOrigin}'"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,342 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/v1/test-authorizer": {
+            "post": {
+                "operationId": "AuthController_testRole",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/v1/login": {
+            "post": {
+                "operationId": "AuthController_login",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthCredentialsDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "returns success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessAuthResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/forgot-password": {
+            "post": {
+                "operationId": "AuthController_forgotPassword",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthForgotPasswordDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "returns success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseStatusDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/confirm-password": {
+            "post": {
+                "operationId": "AuthController_confirm",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ConfirmPasswordCredentialsDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Invalid code provided, please request a code again.."
+                    }
+                }
+            }
+        },
+        "/v1/users/{username}/change-password": {
+            "put": {
+                "operationId": "AuthController_changePassword",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePasswordCredentialsDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "returns success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseStatusDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/refresh-token": {
+            "post": {
+                "operationId": "AuthController_refreshToken",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthRefreshSessionDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "return new token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessAuthResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/force-change-password": {
+            "put": {
+                "operationId": "AuthController_changeInitialPassword",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangeIntialPasswordDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "returns the session information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessAuthResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "no action required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedException"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "info": {
+        "title": "Authentication-Service REST-API",
+        "description": "URL: {hostname}/auth/v1/{endpoint}",
+        "version": "1.0",
+        "contact": {}
+    },
+    "tags": [],
+    "servers": [],
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "type": "http"
+            }
+        },
+        "schemas": {
+            "AuthCredentialsDto": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "username",
+                    "email",
+                    "password"
+                ]
+            },
+            "SuccessAuthResponse": {
+                "type": "object",
+                "properties": {
+                    "accessToken": {
+                        "type": "string"
+                    },
+                    "refreshToken": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "accessToken",
+                    "refreshToken"
+                ]
+            },
+            "AuthForgotPasswordDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email"
+                ]
+            },
+            "ResponseStatusDto": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "status"
+                ]
+            },
+            "ConfirmPasswordCredentialsDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "code",
+                    "password"
+                ]
+            },
+            "ChangePasswordCredentialsDto": {
+                "type": "object",
+                "properties": {
+                    "passwordOld": {
+                        "type": "string"
+                    },
+                    "passwordNew": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "passwordOld",
+                    "passwordNew"
+                ]
+            },
+            "AuthRefreshSessionDto": {
+                "type": "object",
+                "properties": {
+                    "refreshToken": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "refreshToken"
+                ]
+            },
+            "ChangeIntialPasswordDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "passwordOld": {
+                        "type": "string"
+                    },
+                    "passwordNew": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "passwordOld",
+                    "passwordNew"
+                ]
+            },
+            "UnauthorizedException": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    }
+}

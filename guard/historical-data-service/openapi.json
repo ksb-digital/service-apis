@@ -1,0 +1,2152 @@
+{
+    "components": {
+        "examples": {},
+        "headers": {},
+        "parameters": {},
+        "requestBodies": {},
+        "responses": {},
+        "schemas": {
+            "Paging": {
+                "properties": {
+                    "self": {
+                        "type": "string",
+                        "description": "The current page URI",
+                        "example": "https://qa.api.ksbguard.net/devicedata?pumpId=44a3d63d-aa72-4125-b426-7e022b38c927&limit=1000&offset=1000"
+                    },
+                    "next": {
+                        "type": "string",
+                        "description": "The next page URI",
+                        "example": "https://qa.api.ksbguard.net/devicedata?pumpId=44a3d63d-aa72-4125-b426-7e022b38c927&limit=1000&offset=2000"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "description": "The previous page URI",
+                        "example": "https://qa.api.ksbguard.net/devicedata?pumpId=44a3d63d-aa72-4125-b426-7e022b38c927&limit=1000&offset=0"
+                    }
+                },
+                "required": [
+                    "self"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "onOffBit": {
+                "type": "number",
+                "enum": [
+                    0,
+                    1
+                ]
+            },
+            "AssignableDeviceTypeKeys": {
+                "type": "string",
+                "enum": [
+                    "KSB_GUARD_SENSOR",
+                    "KSB_GUARD_ATEX_SENSOR",
+                    "KSB_AMACONTROL3"
+                ],
+                "nullable": false
+            },
+            "SupportedDevicesKeys": {
+                "$ref": "#/components/schemas/AssignableDeviceTypeKeys"
+            },
+            "PickIAmaControl3DeviceDataPointExcludekeyofIAmaControl3DeviceDataPointnodataornodataAlarm": {
+                "properties": {
+                    "firmwareVersion": {
+                        "type": "string",
+                        "description": "Serial number",
+                        "example": "0.26.47"
+                    },
+                    "motorStatus": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Motor status",
+                        "example": 1
+                    },
+                    "motorTemperatureAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Motor temperature alarm",
+                        "example": 1
+                    },
+                    "motorTemperatureModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Motor temperature module active",
+                        "example": 1
+                    },
+                    "bearingTemperature1": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Bearing temperature1",
+                        "example": 110
+                    },
+                    "bearingTemperature1AlarmThreshold": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Bearing temperature1 alarm threshold",
+                        "example": 150
+                    },
+                    "bearingTemperature1Alarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Bearing temperature alarm",
+                        "example": 0
+                    },
+                    "bearingTemperature1ModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Bearing temperature1 module active",
+                        "example": 1
+                    },
+                    "bearingTemperature2": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Bearing temperature2",
+                        "example": 327.67
+                    },
+                    "bearingTemperature2AlarmThreshold": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Bearing temperature2 alarm threshold",
+                        "example": 150
+                    },
+                    "bearingTemperature2Alarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Bearing temperature2 alarm",
+                        "example": 1
+                    },
+                    "bearingTemperature2ModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Bearing temperature2 module active",
+                        "example": 1
+                    },
+                    "leakage1Alarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Leakeage1 alarm",
+                        "example": 0
+                    },
+                    "leakage1ModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Leakage1 module active",
+                        "example": 1
+                    },
+                    "leakage2Alarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Leakeage2 alarm",
+                        "example": 0
+                    },
+                    "leakage2ModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Leakage2 module active",
+                        "example": 1
+                    },
+                    "vibrationCurrent": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Vibration current",
+                        "example": 8.3
+                    },
+                    "vibrationAlarmThresholdCurrent": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Vibration alarm threshold current",
+                        "example": 15.2
+                    },
+                    "vibrationAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Vibration alarm",
+                        "example": 0
+                    },
+                    "vibrationModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Vibration module active",
+                        "example": 1
+                    },
+                    "phaseFailureAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Phase failure alarm",
+                        "example": 0
+                    },
+                    "phaseFailureModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Phase failure module active",
+                        "example": 1
+                    },
+                    "undervoltageAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Undervoltage alarm",
+                        "example": 0
+                    },
+                    "undervoltageModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Undervoltage module active",
+                        "example": 1
+                    },
+                    "overvoltageAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Overvoltage alarm",
+                        "example": 0
+                    },
+                    "overvoltageModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Overvoltage module active",
+                        "example": 1
+                    },
+                    "noCyclesCurrentDay": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "No cycles current day",
+                        "example": 0
+                    },
+                    "motorTemperature": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Motor temperature",
+                        "example": 151.15
+                    },
+                    "noCyclesCurrentHour": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "No cycles current hour",
+                        "example": 0
+                    },
+                    "cyclesAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Cycles alarm",
+                        "example": 0
+                    },
+                    "cyclesModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Cycles module active",
+                        "example": 1
+                    },
+                    "motorRuntime": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Motor runtime",
+                        "example": 0
+                    },
+                    "phaseAsymmetryAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Phase asymmetry alarm",
+                        "example": 0
+                    },
+                    "phaseAsymmetryModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Phase asymmetry module active",
+                        "example": 1
+                    },
+                    "timeToService": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Time to service",
+                        "example": 0
+                    },
+                    "serviceModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Service module active",
+                        "example": 1
+                    },
+                    "phaseVoltage1": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Phase voltage1",
+                        "example": 4660
+                    },
+                    "phaseVoltage2": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Phase voltage2",
+                        "example": 22136
+                    },
+                    "phaseVoltage3": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Phase voltage3",
+                        "example": 39612
+                    },
+                    "motorTemperatureAlarmThreshold": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Motor temperature alarm threshold",
+                        "example": 150
+                    },
+                    "standbyCurrentMin": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Standby current min",
+                        "example": 0
+                    },
+                    "standbyCurrentMax": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Standby current max",
+                        "example": 20
+                    },
+                    "standbyCurrent": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Standby current",
+                        "example": 4
+                    },
+                    "vibration": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Vibration",
+                        "example": 14.875
+                    },
+                    "vibrationAlarmThreshold": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Vibration alarm threshold",
+                        "example": 10.375
+                    },
+                    "ts": {
+                        "type": "string",
+                        "description": "The device data timestamp in ISO format",
+                        "example": "2020-08-14T17:18:43.567Z"
+                    },
+                    "pumpId": {
+                        "type": "string",
+                        "description": "Pump identifier\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "369d921e-0bdc-44a4-81f4-95ce1179f7f4",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "pumpName": {
+                        "type": "string",
+                        "description": "Pump Name",
+                        "example": "Mr Pump"
+                    },
+                    "organizationId": {
+                        "type": "string",
+                        "description": "Organization identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "organizationName": {
+                        "type": "string",
+                        "description": "Organization Name",
+                        "example": "Alphabet"
+                    },
+                    "deviceType": {
+                        "$ref": "#/components/schemas/SupportedDevicesKeys",
+                        "description": "The device type",
+                        "example": "KSB_AMACONTROL3"
+                    },
+                    "deviceSerialNumber": {
+                        "type": "string",
+                        "description": "Device serial number",
+                        "example": "GT-12345"
+                    },
+                    "locationId": {
+                        "type": "string",
+                        "description": "Location identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "locationName": {
+                        "type": "string",
+                        "description": "Location Name",
+                        "example": "Silicon Valley"
+                    },
+                    "technicalLocationId": {
+                        "type": "string",
+                        "description": "Technical Location identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "technicalLocationName": {
+                        "type": "string",
+                        "description": "Technical Location Name",
+                        "example": "Silicon Valley Sewer Point A"
+                    },
+                    "expectedFieldsCount": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "used to check if complete set of data fields is persisted for a timepoint",
+                        "example": 15
+                    },
+                    "repetitionNo": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "number of repetition for measurement",
+                        "example": 15
+                    },
+                    "measurementNo": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "number of measurement",
+                        "example": 15
+                    },
+                    "referenceMeasurementNumber": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "reference number of measurement",
+                        "example": 15
+                    }
+                },
+                "required": [
+                    "ts",
+                    "pumpId",
+                    "pumpName",
+                    "organizationId",
+                    "organizationName",
+                    "deviceType",
+                    "deviceSerialNumber",
+                    "locationId",
+                    "locationName",
+                    "technicalLocationId",
+                    "technicalLocationName"
+                ],
+                "type": "object",
+                "description": "From T, pick a set of properties whose keys are in the union K"
+            },
+            "IAmaControl3DeviceDataResponse": {
+                "properties": {
+                    "firmwareVersion": {
+                        "type": "string",
+                        "description": "Serial number",
+                        "example": "0.26.47"
+                    },
+                    "motorStatus": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Motor status",
+                        "example": 1
+                    },
+                    "motorTemperatureAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Motor temperature alarm",
+                        "example": 1
+                    },
+                    "motorTemperatureModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Motor temperature module active",
+                        "example": 1
+                    },
+                    "bearingTemperature1": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Bearing temperature1",
+                        "example": 110
+                    },
+                    "bearingTemperature1AlarmThreshold": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Bearing temperature1 alarm threshold",
+                        "example": 150
+                    },
+                    "bearingTemperature1Alarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Bearing temperature alarm",
+                        "example": 0
+                    },
+                    "bearingTemperature1ModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Bearing temperature1 module active",
+                        "example": 1
+                    },
+                    "bearingTemperature2": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Bearing temperature2",
+                        "example": 327.67
+                    },
+                    "bearingTemperature2AlarmThreshold": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Bearing temperature2 alarm threshold",
+                        "example": 150
+                    },
+                    "bearingTemperature2Alarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Bearing temperature2 alarm",
+                        "example": 1
+                    },
+                    "bearingTemperature2ModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Bearing temperature2 module active",
+                        "example": 1
+                    },
+                    "leakage1Alarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Leakeage1 alarm",
+                        "example": 0
+                    },
+                    "leakage1ModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Leakage1 module active",
+                        "example": 1
+                    },
+                    "leakage2Alarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Leakeage2 alarm",
+                        "example": 0
+                    },
+                    "leakage2ModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Leakage2 module active",
+                        "example": 1
+                    },
+                    "vibrationCurrent": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Vibration current",
+                        "example": 8.3
+                    },
+                    "vibrationAlarmThresholdCurrent": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Vibration alarm threshold current",
+                        "example": 15.2
+                    },
+                    "vibrationAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Vibration alarm",
+                        "example": 0
+                    },
+                    "vibrationModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Vibration module active",
+                        "example": 1
+                    },
+                    "phaseFailureAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Phase failure alarm",
+                        "example": 0
+                    },
+                    "phaseFailureModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Phase failure module active",
+                        "example": 1
+                    },
+                    "undervoltageAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Undervoltage alarm",
+                        "example": 0
+                    },
+                    "undervoltageModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Undervoltage module active",
+                        "example": 1
+                    },
+                    "overvoltageAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Overvoltage alarm",
+                        "example": 0
+                    },
+                    "overvoltageModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Overvoltage module active",
+                        "example": 1
+                    },
+                    "noCyclesCurrentDay": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "No cycles current day",
+                        "example": 0
+                    },
+                    "motorTemperature": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Motor temperature",
+                        "example": 151.15
+                    },
+                    "noCyclesCurrentHour": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "No cycles current hour",
+                        "example": 0
+                    },
+                    "cyclesAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Cycles alarm",
+                        "example": 0
+                    },
+                    "cyclesModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Cycles module active",
+                        "example": 1
+                    },
+                    "motorRuntime": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Motor runtime",
+                        "example": 0
+                    },
+                    "phaseAsymmetryAlarm": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Phase asymmetry alarm",
+                        "example": 0
+                    },
+                    "phaseAsymmetryModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Phase asymmetry module active",
+                        "example": 1
+                    },
+                    "timeToService": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Time to service",
+                        "example": 0
+                    },
+                    "serviceModuleActive": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Service module active",
+                        "example": 1
+                    },
+                    "phaseVoltage1": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Phase voltage1",
+                        "example": 4660
+                    },
+                    "phaseVoltage2": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Phase voltage2",
+                        "example": 22136
+                    },
+                    "phaseVoltage3": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Phase voltage3",
+                        "example": 39612
+                    },
+                    "motorTemperatureAlarmThreshold": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Motor temperature alarm threshold",
+                        "example": 150
+                    },
+                    "standbyCurrentMin": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Standby current min",
+                        "example": 0
+                    },
+                    "standbyCurrentMax": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Standby current max",
+                        "example": 20
+                    },
+                    "standbyCurrent": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Standby current",
+                        "example": 4
+                    },
+                    "vibration": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Vibration",
+                        "example": 14.875
+                    },
+                    "vibrationAlarmThreshold": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Vibration alarm threshold",
+                        "example": 10.375
+                    },
+                    "ts": {
+                        "type": "string",
+                        "description": "The device data timestamp in ISO format",
+                        "example": "2020-08-14T17:18:43.567Z"
+                    },
+                    "pumpId": {
+                        "type": "string",
+                        "description": "Pump identifier\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "369d921e-0bdc-44a4-81f4-95ce1179f7f4",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "pumpName": {
+                        "type": "string",
+                        "description": "Pump Name",
+                        "example": "Mr Pump"
+                    },
+                    "organizationId": {
+                        "type": "string",
+                        "description": "Organization identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "organizationName": {
+                        "type": "string",
+                        "description": "Organization Name",
+                        "example": "Alphabet"
+                    },
+                    "deviceType": {
+                        "$ref": "#/components/schemas/SupportedDevicesKeys",
+                        "description": "The device type",
+                        "example": "KSB_AMACONTROL3"
+                    },
+                    "deviceSerialNumber": {
+                        "type": "string",
+                        "description": "Device serial number",
+                        "example": "GT-12345"
+                    },
+                    "locationId": {
+                        "type": "string",
+                        "description": "Location identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "locationName": {
+                        "type": "string",
+                        "description": "Location Name",
+                        "example": "Silicon Valley"
+                    },
+                    "technicalLocationId": {
+                        "type": "string",
+                        "description": "Technical Location identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "technicalLocationName": {
+                        "type": "string",
+                        "description": "Technical Location Name",
+                        "example": "Silicon Valley Sewer Point A"
+                    },
+                    "expectedFieldsCount": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "used to check if complete set of data fields is persisted for a timepoint",
+                        "example": 15
+                    },
+                    "repetitionNo": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "number of repetition for measurement",
+                        "example": 15
+                    },
+                    "measurementNo": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "number of measurement",
+                        "example": 15
+                    },
+                    "referenceMeasurementNumber": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "reference number of measurement",
+                        "example": 15
+                    }
+                },
+                "required": [
+                    "ts",
+                    "pumpId",
+                    "pumpName",
+                    "organizationId",
+                    "organizationName",
+                    "deviceType",
+                    "deviceSerialNumber",
+                    "locationId",
+                    "locationName",
+                    "technicalLocationId",
+                    "technicalLocationName"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "LoadStatusKeys": {
+                "type": "string",
+                "enum": [
+                    "OFF",
+                    "NORMAL_LOAD",
+                    "EXTREME_PARTIAL_LOAD",
+                    "PARTIAL_LOAD",
+                    "OVER_LOAD",
+                    "FREQUENCYCONVERTER",
+                    "UNDEFINED"
+                ],
+                "nullable": false
+            },
+            "PickIGuardDeviceDataPointExcludekeyofIGuardDeviceDataPointnodataornodataAlarm": {
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "description": "The device data timestamp in ISO format",
+                        "example": "2020-08-14T17:18:43.567Z"
+                    },
+                    "pumpId": {
+                        "type": "string",
+                        "description": "Pump identifier\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "369d921e-0bdc-44a4-81f4-95ce1179f7f4",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "pumpName": {
+                        "type": "string",
+                        "description": "Pump Name",
+                        "example": "Mr Pump"
+                    },
+                    "organizationId": {
+                        "type": "string",
+                        "description": "Organization identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "organizationName": {
+                        "type": "string",
+                        "description": "Organization Name",
+                        "example": "Alphabet"
+                    },
+                    "deviceType": {
+                        "$ref": "#/components/schemas/SupportedDevicesKeys",
+                        "description": "The device type",
+                        "example": "KSB_AMACONTROL3"
+                    },
+                    "deviceSerialNumber": {
+                        "type": "string",
+                        "description": "Device serial number",
+                        "example": "GT-12345"
+                    },
+                    "locationId": {
+                        "type": "string",
+                        "description": "Location identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "locationName": {
+                        "type": "string",
+                        "description": "Location Name",
+                        "example": "Silicon Valley"
+                    },
+                    "technicalLocationId": {
+                        "type": "string",
+                        "description": "Technical Location identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "technicalLocationName": {
+                        "type": "string",
+                        "description": "Technical Location Name",
+                        "example": "Silicon Valley Sewer Point A"
+                    },
+                    "expectedFieldsCount": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "used to check if complete set of data fields is persisted for a timepoint",
+                        "example": 15
+                    },
+                    "repetitionNo": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "number of repetition for measurement",
+                        "example": 15
+                    },
+                    "measurementNo": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "number of measurement",
+                        "example": 15
+                    },
+                    "referenceMeasurementNumber": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "reference number of measurement",
+                        "example": 15
+                    },
+                    "rmsMax": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Maximum Root Mean Square (RMS)\nSee [Root mean square](https://en.wikipedia.org/wiki/Root_mean_square)",
+                        "example": 14.5
+                    },
+                    "rmsX": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "RMS X",
+                        "example": 8.43
+                    },
+                    "rmsY": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "RMS Y",
+                        "example": 1.3
+                    },
+                    "rmsZ": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "RMS Z"
+                    },
+                    "loadStatus": {
+                        "$ref": "#/components/schemas/LoadStatusKeys",
+                        "description": "Load status"
+                    },
+                    "motorSpeed": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Motor speed"
+                    },
+                    "pumpOnOffTemp": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Pump on off temp",
+                        "example": 1
+                    },
+                    "pumpOn": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Pump on",
+                        "example": 1
+                    },
+                    "batteryTemperature": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Battery temperature",
+                        "example": 23.5
+                    },
+                    "batteryState": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Battery state",
+                        "example": 2.7345
+                    },
+                    "batteryPercentage": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Battery percentage",
+                        "example": 20.55
+                    },
+                    "sensorTemperature": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Sensor temperature",
+                        "example": 10
+                    },
+                    "batteryStateThreshold": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Low Battery Voltage Threshold",
+                        "example": 2.7
+                    },
+                    "batteryVoltageAlarmThreshold": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Low Battery Voltage Threshold",
+                        "example": 2.7
+                    },
+                    "batteryVoltageNormalThreshold": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Low Battery Voltage Normalization Threshold",
+                        "example": 3.1
+                    },
+                    "batteryStateCyclesCountThreshold": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Low Battery Cycles Threshold",
+                        "example": 47500
+                    }
+                },
+                "required": [
+                    "ts",
+                    "pumpId",
+                    "pumpName",
+                    "organizationId",
+                    "organizationName",
+                    "deviceType",
+                    "deviceSerialNumber",
+                    "locationId",
+                    "locationName",
+                    "technicalLocationId",
+                    "technicalLocationName"
+                ],
+                "type": "object",
+                "description": "From T, pick a set of properties whose keys are in the union K"
+            },
+            "IGuardDeviceDataResponse": {
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "description": "The device data timestamp in ISO format",
+                        "example": "2020-08-14T17:18:43.567Z"
+                    },
+                    "pumpId": {
+                        "type": "string",
+                        "description": "Pump identifier\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "369d921e-0bdc-44a4-81f4-95ce1179f7f4",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "pumpName": {
+                        "type": "string",
+                        "description": "Pump Name",
+                        "example": "Mr Pump"
+                    },
+                    "organizationId": {
+                        "type": "string",
+                        "description": "Organization identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "organizationName": {
+                        "type": "string",
+                        "description": "Organization Name",
+                        "example": "Alphabet"
+                    },
+                    "deviceType": {
+                        "$ref": "#/components/schemas/SupportedDevicesKeys",
+                        "description": "The device type",
+                        "example": "KSB_AMACONTROL3"
+                    },
+                    "deviceSerialNumber": {
+                        "type": "string",
+                        "description": "Device serial number",
+                        "example": "GT-12345"
+                    },
+                    "locationId": {
+                        "type": "string",
+                        "description": "Location identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "locationName": {
+                        "type": "string",
+                        "description": "Location Name",
+                        "example": "Silicon Valley"
+                    },
+                    "technicalLocationId": {
+                        "type": "string",
+                        "description": "Technical Location identifier\n\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+                        "example": "89f5fd9a-881f-43bf-bd8e-e31d282922ef",
+                        "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+                    },
+                    "technicalLocationName": {
+                        "type": "string",
+                        "description": "Technical Location Name",
+                        "example": "Silicon Valley Sewer Point A"
+                    },
+                    "expectedFieldsCount": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "used to check if complete set of data fields is persisted for a timepoint",
+                        "example": 15
+                    },
+                    "repetitionNo": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "number of repetition for measurement",
+                        "example": 15
+                    },
+                    "measurementNo": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "number of measurement",
+                        "example": 15
+                    },
+                    "referenceMeasurementNumber": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "reference number of measurement",
+                        "example": 15
+                    },
+                    "rmsMax": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Maximum Root Mean Square (RMS)\nSee [Root mean square](https://en.wikipedia.org/wiki/Root_mean_square)",
+                        "example": 14.5
+                    },
+                    "rmsX": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "RMS X",
+                        "example": 8.43
+                    },
+                    "rmsY": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "RMS Y",
+                        "example": 1.3
+                    },
+                    "rmsZ": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "RMS Z"
+                    },
+                    "loadStatus": {
+                        "$ref": "#/components/schemas/LoadStatusKeys",
+                        "description": "Load status"
+                    },
+                    "motorSpeed": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Motor speed"
+                    },
+                    "pumpOnOffTemp": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Pump on off temp",
+                        "example": 1
+                    },
+                    "pumpOn": {
+                        "$ref": "#/components/schemas/onOffBit",
+                        "description": "Pump on",
+                        "example": 1
+                    },
+                    "batteryTemperature": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Battery temperature",
+                        "example": 23.5
+                    },
+                    "batteryState": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Battery state",
+                        "example": 2.7345
+                    },
+                    "batteryPercentage": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Battery percentage",
+                        "example": 20.55
+                    },
+                    "sensorTemperature": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Sensor temperature",
+                        "example": 10
+                    },
+                    "batteryStateThreshold": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Low Battery Voltage Threshold",
+                        "example": 2.7
+                    },
+                    "batteryVoltageAlarmThreshold": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Low Battery Voltage Threshold",
+                        "example": 2.7
+                    },
+                    "batteryVoltageNormalThreshold": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Low Battery Voltage Normalization Threshold",
+                        "example": 3.1
+                    },
+                    "batteryStateCyclesCountThreshold": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Low Battery Cycles Threshold",
+                        "example": 47500
+                    }
+                },
+                "required": [
+                    "ts",
+                    "pumpId",
+                    "pumpName",
+                    "organizationId",
+                    "organizationName",
+                    "deviceType",
+                    "deviceSerialNumber",
+                    "locationId",
+                    "locationName",
+                    "technicalLocationId",
+                    "technicalLocationName"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "IDeviceDataResponse": {
+                "anyOf": [
+                    {
+                        "$ref": "#/components/schemas/IAmaControl3DeviceDataResponse"
+                    },
+                    {
+                        "$ref": "#/components/schemas/IGuardDeviceDataResponse"
+                    }
+                ]
+            },
+            "IDeviceDataPagedResponse": {
+                "properties": {
+                    "paging": {
+                        "$ref": "#/components/schemas/Paging"
+                    },
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/IDeviceDataResponse"
+                        },
+                        "type": "array",
+                        "description": "List of items returned by the search query at the current page"
+                    }
+                },
+                "required": [
+                    "paging",
+                    "data"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "QueryParamPumpId": {
+                "type": "string",
+                "description": "Pump identifier. See [RFC 4112](https://tools.ietf.org/html/rfc4122)"
+            },
+            "DeviceType": {
+                "description": "Device type",
+                "enum": [
+                    "KSB_MODBUS_SENDER_UNIT",
+                    "KSB_AMACONTROL3",
+                    "KRIWAN_INT600_DM",
+                    "KSB_GUARD_SENSOR",
+                    "KSB_GUARD_ATEX_SENSOR"
+                ],
+                "type": "string"
+            },
+            "AmacontrolBooleanAggregatedBy": {
+                "enum": [
+                    "bearingTemperature1Alarm",
+                    "bearingTemperature1ModuleActive",
+                    "bearingTemperature2Alarm",
+                    "bearingTemperature2ModuleActive",
+                    "cyclesAlarm",
+                    "cyclesModuleActive",
+                    "leakage1Alarm",
+                    "leakage1ModuleActive",
+                    "leakage2Alarm",
+                    "leakage2ModuleActive",
+                    "motorStatus",
+                    "motorTemperatureAlarm",
+                    "motorTemperatureModuleActive",
+                    "overvoltageAlarm",
+                    "overvoltageModuleActive",
+                    "phaseAsymmetryAlarm",
+                    "phaseAsymmetryModuleActive",
+                    "phaseFailureAlarm",
+                    "phaseFailureModuleActive",
+                    "serviceModuleActive",
+                    "undervoltageAlarm",
+                    "undervoltageModuleActive",
+                    "vibrationAlarm",
+                    "vibrationModuleActive"
+                ],
+                "type": "string"
+            },
+            "KsbGuardBooleanAggregatedBy": {
+                "enum": [
+                    "pumpOn",
+                    "pumpOnOffTemp"
+                ],
+                "type": "string"
+            },
+            "SupportedBooleanAggregatedBy": {
+                "anyOf": [
+                    {
+                        "$ref": "#/components/schemas/AmacontrolBooleanAggregatedBy"
+                    },
+                    {
+                        "$ref": "#/components/schemas/KsbGuardBooleanAggregatedBy"
+                    }
+                ]
+            },
+            "AmacontrolNumericAggregatedBy": {
+                "enum": [
+                    "bearingTemperature1",
+                    "bearingTemperature1AlarmThreshold",
+                    "bearingTemperature2",
+                    "bearingTemperature2AlarmThreshold",
+                    "motorRuntime",
+                    "motorStatus",
+                    "motorTemperature",
+                    "motorTemperatureAlarmThreshold",
+                    "noCyclesCurrentDay",
+                    "noCyclesCurrentHour",
+                    "phaseVoltage1",
+                    "phaseVoltage2",
+                    "phaseVoltage3",
+                    "standbyCurrent",
+                    "standbyCurrentMax",
+                    "standbyCurrentMin",
+                    "timeToService",
+                    "vibration",
+                    "vibrationAlarmThreshold",
+                    "vibrationAlarmThresholdCurrent",
+                    "vibrationCurrent"
+                ],
+                "type": "string"
+            },
+            "KsbGuardNumericAggregatedBy": {
+                "enum": [
+                    "batteryState",
+                    "batteryTemperature",
+                    "motorSpeed",
+                    "rmsMax",
+                    "rmsX",
+                    "rmsY",
+                    "rmsZ",
+                    "sensorTemperature"
+                ],
+                "type": "string"
+            },
+            "SupportedNumericAggregatedBy": {
+                "anyOf": [
+                    {
+                        "$ref": "#/components/schemas/AmacontrolNumericAggregatedBy"
+                    },
+                    {
+                        "$ref": "#/components/schemas/KsbGuardNumericAggregatedBy"
+                    }
+                ]
+            },
+            "KsbGuardEnumAggregatedBy": {
+                "enum": [
+                    "loadStatus"
+                ],
+                "type": "string"
+            },
+            "SupportedAggregatedBy": {
+                "anyOf": [
+                    {
+                        "$ref": "#/components/schemas/SupportedBooleanAggregatedBy"
+                    },
+                    {
+                        "$ref": "#/components/schemas/SupportedNumericAggregatedBy"
+                    },
+                    {
+                        "$ref": "#/components/schemas/KsbGuardEnumAggregatedBy"
+                    }
+                ]
+            },
+            "SupportedAggregatedFunctions": {
+                "description": "Aggregation function to be used",
+                "enum": [
+                    "mean",
+                    "max",
+                    "countState"
+                ],
+                "type": "string"
+            },
+            "QueryParamStartDate": {
+                "type": "string",
+                "description": "Filter results where the time entry is greater than or equals to the given start date.\nSee [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) format"
+            },
+            "QueryParamEndDate": {
+                "type": "string",
+                "description": "Filter results where the time entry is less than the given end date.\nSee [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) format"
+            },
+            "QueryParamLimit": {
+                "type": "integer",
+                "format": "int32",
+                "default": "1000",
+                "example": 50,
+                "description": "Limits the number of items returned",
+                "minimum": 1
+            },
+            "QueryParamOffset": {
+                "type": "integer",
+                "format": "int32",
+                "default": "0",
+                "description": "Number of items to be skipped",
+                "minimum": 0
+            },
+            "UnitSystemKeys": {
+                "type": "string",
+                "enum": [
+                    "metric",
+                    "imperial"
+                ]
+            },
+            "IFftResult": {
+                "properties": {
+                    "errorMessage": {
+                        "type": "string"
+                    },
+                    "errorType": {
+                        "type": "string"
+                    },
+                    "frequency": {
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        },
+                        "type": "array"
+                    },
+                    "x": {
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        },
+                        "type": "array"
+                    },
+                    "y": {
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        },
+                        "type": "array"
+                    },
+                    "z": {
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        },
+                        "type": "array"
+                    }
+                },
+                "type": "object",
+                "additionalProperties": false
+            },
+            "QueryParamDeviceSerialNumber": {
+                "type": "string",
+                "description": "Device serial number."
+            },
+            "QueryParamDate": {
+                "type": "string",
+                "description": "Get results next to certain time.\nSee [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) format"
+            },
+            "ITimeSignalResult": {
+                "properties": {
+                    "errorMessage": {
+                        "type": "string"
+                    },
+                    "errorType": {
+                        "type": "string"
+                    },
+                    "ms": {
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        },
+                        "type": "array"
+                    },
+                    "x": {
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        },
+                        "type": "array"
+                    },
+                    "y": {
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        },
+                        "type": "array"
+                    },
+                    "z": {
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        },
+                        "type": "array"
+                    }
+                },
+                "type": "object",
+                "additionalProperties": false
+            },
+            "UnitSystem": {
+                "enum": [
+                    "metric",
+                    "imperial"
+                ],
+                "type": "string"
+            }
+        },
+        "securitySchemes": {
+            "KsbUserPool": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "x-amazon-apigateway-authtype": "cognito_user_pools",
+                "x-amazon-apigateway-authorizer": {
+                    "type": "cognito_user_pools",
+                    "providerARNs": [
+                        {
+                            "Fn::Sub": "${KsbUserPoolArn}"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "info": {
+        "title": "historical-data-service",
+        "version": "1.0.0",
+        "description": "Historical data API",
+        "license": {
+            "name": "UNLICENSED"
+        },
+        "contact": {}
+    },
+    "openapi": "3.0.0",
+    "paths": {
+        "/aggregate": {
+            "get": {
+                "operationId": "getAggregatedDeviceData",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IDeviceDataPagedResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Gets aggregated data by using the MAX function",
+                "security": [
+                    {
+                        "KsbUserPool": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "pumpId",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamPumpId"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "deviceType",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/DeviceType"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "aggregateBy",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/SupportedAggregatedBy"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "aggregateFunc",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/SupportedAggregatedFunctions"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "startDate",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamStartDate"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "endDate",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamEndDate"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamLimit"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamOffset"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "unitSystem",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/UnitSystemKeys"
+                        }
+                    }
+                ],
+                "x-amazon-apigateway-integration": {
+                    "uri": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "arn:aws:apigateway:",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                ":lambda:path/2015-03-31/functions/",
+                                {
+                                    "Fn::GetAtt": [
+                                        "GetAggregatedDeviceDataFunction",
+                                        "Arn"
+                                    ]
+                                },
+                                "/invocations"
+                            ]
+                        ]
+                    },
+                    "httpMethod": "POST",
+                    "type": "aws_proxy"
+                }
+            },
+            "options": {
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Default response for CORS method",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Access-Control-Allow-Methods": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {}
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "type": "mock",
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "responses": {
+                        "default": {
+                            "statusCode": 200,
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                                "method.response.header.Access-Control-Allow-Origin": {
+                                    "Fn::Sub": "'${AllowedOrigin}'"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "operationId": "getDeviceData",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IDeviceDataPagedResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieve historical data",
+                "security": [
+                    {
+                        "KsbUserPool": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "pumpId",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamPumpId"
+                        }
+                    },
+                    {
+                        "description": "Comma separated fields, these fields are the only fields to be returned as part of every\nitem, filtering out any other field",
+                        "in": "query",
+                        "name": "fields",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "motorTemperature,motorTemperatureAlarmThreshold"
+                    },
+                    {
+                        "in": "query",
+                        "name": "startDate",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamStartDate"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "endDate",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamEndDate"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamLimit"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamOffset"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "unitSystem",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/UnitSystemKeys"
+                        }
+                    }
+                ],
+                "x-amazon-apigateway-integration": {
+                    "uri": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "arn:aws:apigateway:",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                ":lambda:path/2015-03-31/functions/",
+                                {
+                                    "Fn::GetAtt": [
+                                        "GetDeviceDataFunction",
+                                        "Arn"
+                                    ]
+                                },
+                                "/invocations"
+                            ]
+                        ]
+                    },
+                    "httpMethod": "POST",
+                    "type": "aws_proxy"
+                }
+            },
+            "options": {
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Default response for CORS method",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Access-Control-Allow-Methods": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {}
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "type": "mock",
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "responses": {
+                        "default": {
+                            "statusCode": 200,
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                                "method.response.header.Access-Control-Allow-Origin": {
+                                    "Fn::Sub": "'${AllowedOrigin}'"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/fft": {
+            "get": {
+                "operationId": "readFftData",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IFftResult"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieve the FFT data for a given device",
+                "security": [
+                    {
+                        "KsbUserPool": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "deviceSerialNumber",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamDeviceSerialNumber"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "ts",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamDate"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "unitSystem",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/UnitSystemKeys"
+                        }
+                    }
+                ],
+                "x-amazon-apigateway-integration": {
+                    "uri": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "arn:aws:apigateway:",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                ":lambda:path/2015-03-31/functions/",
+                                {
+                                    "Fn::GetAtt": [
+                                        "GetFftDataFunction",
+                                        "Arn"
+                                    ]
+                                },
+                                "/invocations"
+                            ]
+                        ]
+                    },
+                    "httpMethod": "POST",
+                    "type": "aws_proxy"
+                }
+            },
+            "options": {
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Default response for CORS method",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Access-Control-Allow-Methods": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {}
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "type": "mock",
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "responses": {
+                        "default": {
+                            "statusCode": 200,
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                                "method.response.header.Access-Control-Allow-Origin": {
+                                    "Fn::Sub": "'${AllowedOrigin}'"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/time-signal": {
+            "get": {
+                "operationId": "readTimeSignalData",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ITimeSignalResult"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieve the time signal data for a given device",
+                "security": [
+                    {
+                        "KsbUserPool": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "deviceSerialNumber",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamDeviceSerialNumber"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "ts",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamDate"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "unitSystem",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/UnitSystemKeys"
+                        }
+                    }
+                ],
+                "x-amazon-apigateway-integration": {
+                    "uri": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "arn:aws:apigateway:",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                ":lambda:path/2015-03-31/functions/",
+                                {
+                                    "Fn::GetAtt": [
+                                        "GetTimeSignalDataFunction",
+                                        "Arn"
+                                    ]
+                                },
+                                "/invocations"
+                            ]
+                        ]
+                    },
+                    "httpMethod": "POST",
+                    "type": "aws_proxy"
+                }
+            },
+            "options": {
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Default response for CORS method",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Access-Control-Allow-Methods": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {}
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "type": "mock",
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "responses": {
+                        "default": {
+                            "statusCode": 200,
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                                "method.response.header.Access-Control-Allow-Origin": {
+                                    "Fn::Sub": "'${AllowedOrigin}'"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/latest": {
+            "get": {
+                "operationId": "readLastDeviceData",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IDeviceDataResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieve the latest data point",
+                "security": [
+                    {
+                        "KsbUserPool": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "pumpId",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/QueryParamPumpId"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "unitSystem",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/UnitSystem"
+                        }
+                    }
+                ],
+                "x-amazon-apigateway-integration": {
+                    "uri": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "arn:aws:apigateway:",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                ":lambda:path/2015-03-31/functions/",
+                                {
+                                    "Fn::GetAtt": [
+                                        "LastDeviceDataFunction",
+                                        "Arn"
+                                    ]
+                                },
+                                "/invocations"
+                            ]
+                        ]
+                    },
+                    "httpMethod": "POST",
+                    "type": "aws_proxy"
+                }
+            },
+            "options": {
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Default response for CORS method",
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Access-Control-Allow-Methods": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {}
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "type": "mock",
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "responses": {
+                        "default": {
+                            "statusCode": 200,
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                                "method.response.header.Access-Control-Allow-Origin": {
+                                    "Fn::Sub": "'${AllowedOrigin}'"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "https://api.ksbguard.net/devicedata/"
+        }
+    ],
+    "x-amazon-apigateway-request-validators": {
+        "all": {
+            "validateRequestBody": true,
+            "validateRequestParameters": true
+        },
+        "params-only": {
+            "validateRequestBody": false,
+            "validateRequestParameters": true
+        }
+    },
+    "x-amazon-apigateway-gateway-responses": {
+        "DEFAULT_4XX": {
+            "responseParameters": {
+                "gatewayresponse.header.Access-Control-Allow-Origin": {
+                    "Fn::Sub": "'${AllowedOrigin}'"
+                }
+            }
+        },
+        "DEFAULT_5XX": {
+            "responseParameters": {
+                "gatewayresponse.header.Access-Control-Allow-Origin": {
+                    "Fn::Sub": "'${AllowedOrigin}'"
+                }
+            }
+        }
+    },
+    "x-amazon-apigateway-request-validator": "params-only"
+}

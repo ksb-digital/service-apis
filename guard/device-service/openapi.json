@@ -1,0 +1,2391 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "device-service",
+    "version": "1.0.0",
+    "description": "Merged API. Admin API: https://admin.api.(STAGE).ksbguard.net Public API: https://api.(STAGE).ksbguard.net",
+    "license": {
+      "name": "UNLICENSED"
+    },
+    "contact": {}
+  },
+  "servers": [
+    {
+      "url": "https://admin.api.ksbguard.net/devices/"
+    }
+  ],
+  "paths": {
+    "/AdminAPI /devices": {
+      "get": {
+        "operationId": "AdminDeviceFilterFunction",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/Partialany"
+                      },
+                      "type": "array"
+                    },
+                    "lastKey": {
+                      "$ref": "#/components/schemas/Recordstringany"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "lastKey"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "description": "device filter",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "organizationId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pumpId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deviceType",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lastKey",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminDeviceFilterFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AdminAPI /devices/{deviceType}/{serialNumber}": {
+      "get": {
+        "operationId": "AdminDeviceFilterTypeSerialNumberFunction",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "firstDataReceived": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "$ref": "#/components/schemas/IRevisionData"
+                    },
+                    "pumpId": {
+                      "type": "string"
+                    },
+                    "organizationId": {
+                      "type": "string"
+                    },
+                    "relationPath": {
+                      "type": "string"
+                    },
+                    "relationRoot": {
+                      "type": "string"
+                    },
+                    "deviceType": {
+                      "$ref": "#/components/schemas/DeviceType"
+                    },
+                    "serialNumber": {
+                      "type": "string"
+                    },
+                    "gateways": {
+                      "items": {
+                        "$ref": "#/components/schemas/HistoryGateway"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "updatedAt",
+                    "createdAt",
+                    "revision",
+                    "pumpId",
+                    "organizationId",
+                    "relationPath",
+                    "relationRoot",
+                    "deviceType",
+                    "serialNumber",
+                    "gateways"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "description": "Device Filter Device Type SerialNumber",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "deviceType",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminDeviceFilterTypeSerialNumberFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "deviceType",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AdminAPI /devices/{deviceType}/{serialNumber}/unassign": {
+      "put": {
+        "operationId": "UnassignDeviceFunction",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDeviceObjectResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Unassign Device",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deviceType",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UnassignDeviceFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deviceType",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AdminAPI /devices/{deviceType}/{serialNumber}/resetFirmwareVersion": {
+      "post": {
+        "operationId": "AdminResetFirmwareRevisionFunction",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "description": "Reset Firmware Revision",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "deviceType",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DeviceTypeStrings"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AdminResetFirmwareRevisionFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "deviceType",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DeviceTypeStrings"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AdminAPI /devices/KSB_GUARD_ATEX_SENDER_UNIT/{serialNumber}": {
+      "put": {
+        "operationId": "UpdateGuardAtexSenderUnitFunction",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "description": "update guard atex sender unit",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartialGuardSenderUnit"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UpdateGuardAtexSenderUnitFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AdminAPI /devices/KSB_GUARD_ATEX_SENSOR/{serialNumber}": {
+      "put": {
+        "operationId": "UpdateGuardAtexSensorFunction",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "description": "update guard atex sensor",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartialGuardSensorHead"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UpdateGuardAtexSensorFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AdminAPI /devices/KSB_GUARD_SENDER_UNIT/{serialNumber}": {
+      "put": {
+        "operationId": "UpdateGuardSenderUnitFunction",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "description": "update guard sender unit",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartialGuardSenderUnit"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UpdateGuardSenderUnitFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AdminAPI /devices/KSB_GUARD_SENSOR/{serialNumber}": {
+      "put": {
+        "operationId": "UpdateGuardSensorFunction",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "description": "update guard sensor",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartialGuardSensorHead"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UpdateGuardSensorFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices": {
+      "get": {
+        "operationId": "DeviceFilterFunction",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/Partialany"
+                      },
+                      "type": "array"
+                    },
+                    "lastKey": {
+                      "$ref": "#/components/schemas/Recordstringany"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "lastKey"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "description": "get user device filter",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "pumpId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deviceType",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lastKey",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DeviceFilterFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/{deviceType}/{serialNumber}": {
+      "get": {
+        "operationId": "DeviceFilterTypeSerialNumberFunction",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Partialany"
+                }
+              }
+            }
+          }
+        },
+        "description": "get user device filter device type as serial number",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "deviceType",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DeviceFilterTypeSerialNumberFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "deviceType",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/{deviceType}/{serialNumber}/assign": {
+      "put": {
+        "operationId": "AssignDeviceOrganizationFunction",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "devices": {
+                      "items": {
+                        "$ref": "#/components/schemas/IDeviceObjectResponse"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "devices"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "description": "user put assign device organization",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deviceType",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DeviceType"
+            }
+          },
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AssignDeviceOrganizationFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deviceType",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DeviceType"
+            }
+          },
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/KSB_GUARD_ATEX_SENDER_UNIT/{serialNumber}": {
+      "put": {
+        "operationId": "UpdateGuardAtexSenderUnitFunction1",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "description": "update guard atex sender unit",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartialGuardSenderUnit"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UpdateGuardAtexSenderUnitFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/KSB_GUARD_ATEX_SENSOR/{serialNumber}": {
+      "put": {
+        "operationId": "UpdateGuardAtexSensorFunction1",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "description": "update guard atex sensor",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartialGuardSensorHead"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UpdateGuardAtexSensorFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/KSB_GUARD_SENDER_UNIT/{serialNumber}": {
+      "put": {
+        "operationId": "UpdateGuardSenderUnitFunction1",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "description": "update guard sender unit",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartialGuardSenderUnit"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UpdateGuardSenderUnitFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/KSB_GUARD_SENSOR/{serialNumber}": {
+      "put": {
+        "operationId": "UpdateGuardSensorFunction1",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "description": "update guard sensor",
+        "security": [
+          {
+            "KsbUserPool": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartialGuardSensorHead"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UpdateGuardSensorFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "options": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serialNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default response for CORS method",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": 200,
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Sub": "'${AllowedOrigin}'"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Recordstringany": {
+        "properties": {},
+        "type": "object",
+        "description": "Construct a type with a set of properties K of type T"
+      },
+      "Partialany": {
+        "properties": {},
+        "type": "object",
+        "description": "Make all properties in T optional"
+      },
+      "Recordstringunknown": {
+        "properties": {},
+        "type": "object",
+        "description": "Construct a type with a set of properties K of type T"
+      },
+      "DeviceType": {
+        "enum": [
+          "KSB_AMACONTROL3",
+          "KSB_GUARD_ATEX_SENDER_UNIT",
+          "KSB_GUARD_ATEX_SENSOR",
+          "KSB_GUARD_SENDER_UNIT",
+          "KSB_GUARD_SENSOR",
+          "KRIWAN_INT600_DM",
+          "KSB_MODBUS_SENDER_UNIT"
+        ],
+        "type": "string"
+      },
+      "IRevisionData": {
+        "properties": {
+          "firmwareRev": {
+            "type": "number",
+            "format": "double"
+          },
+          "firmwareVersion": {
+            "type": "string"
+          },
+          "hardwareRev": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "additionalProperties": false
+      },
+      "PartialIDeviceorIGuardDeviceorIGuardSenderUnitorIGuardSensorHead": {
+        "properties": {
+          "serialNumber": {
+            "type": "string"
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/DeviceType"
+          },
+          "relationRoot": {
+            "type": "string"
+          },
+          "relationPath": {
+            "type": "string"
+          },
+          "organizationId": {
+            "type": "string"
+          },
+          "pumpId": {
+            "type": "string"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/IRevisionData"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "firstDataReceived": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "description": "Make all properties in T optional"
+      },
+      "DeviceFilterResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/PartialIDeviceorIGuardDeviceorIGuardSenderUnitorIGuardSensorHead"
+            },
+            "type": "array"
+          },
+          "lastKey": {
+            "$ref": "#/components/schemas/Recordstringunknown"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "type": "object"
+      },
+      "HistoryGateway": {
+        "properties": {
+          "gatewaySerialNumber": {
+            "type": "string"
+          },
+          "lastDeviceConnection": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "gatewaySerialNumber",
+          "lastDeviceConnection"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "AdminDeviceFilterResponse": {
+        "properties": {
+          "serialNumber": {
+            "type": "string"
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/DeviceType"
+          },
+          "relationRoot": {
+            "type": "string"
+          },
+          "relationPath": {
+            "type": "string"
+          },
+          "organizationId": {
+            "type": "string"
+          },
+          "pumpId": {
+            "type": "string"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/IRevisionData"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "firstDataReceived": {
+            "type": "string"
+          },
+          "gateways": {
+            "items": {
+              "$ref": "#/components/schemas/HistoryGateway"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "serialNumber",
+          "deviceType",
+          "relationRoot",
+          "relationPath",
+          "organizationId",
+          "pumpId",
+          "revision",
+          "createdAt",
+          "updatedAt",
+          "gateways"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "PickIDeviceExcludekeyofIDeviceorganizationId": {
+        "properties": {},
+        "type": "object",
+        "description": "From T, pick a set of properties whose keys are in the union K"
+      },
+      "OmitIDeviceorganizationId": {
+        "$ref": "#/components/schemas/PickIDeviceExcludekeyofIDeviceorganizationId",
+        "description": "Construct a type with the properties of T except for those in type K."
+      },
+      "IDeviceObjectResponse": {
+        "$ref": "#/components/schemas/OmitIDeviceorganizationId"
+      },
+      "DeviceTypeStrings": {
+        "type": "string",
+        "enum": [
+          "KSB_AMACONTROL3",
+          "KSB_GUARD_ATEX_SENDER_UNIT",
+          "KSB_GUARD_ATEX_SENSOR",
+          "KSB_GUARD_SENDER_UNIT",
+          "KSB_GUARD_SENSOR",
+          "KRIWAN_INT600_DM",
+          "KSB_MODBUS_SENDER_UNIT"
+        ]
+      },
+      "SensorHeadMeasurementMode": {
+        "enum": [
+          "LEGACY",
+          "ENHANCED_PROCESS_DATA",
+          "COMPRESSED_RAW_DATA",
+          "EVALUATION"
+        ],
+        "type": "string"
+      },
+      "PartialGuardSenderUnit": {
+        "properties": {
+          "batteryChangedOn": {
+            "type": "string"
+          },
+          "batteryPercentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "batteryCyclesCount": {
+            "type": "number",
+            "format": "double"
+          },
+          "debugDataEnable": {
+            "type": "boolean"
+          },
+          "otaUpdateEnable": {
+            "type": "boolean"
+          },
+          "rawDataEnable": {
+            "type": "boolean"
+          },
+          "rawDataFull": {
+            "type": "boolean"
+          },
+          "revisionUpdatedAt": {
+            "type": "string"
+          },
+          "sensorEnable": {
+            "type": "boolean"
+          },
+          "wakeUpTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "sensorHeadMeasurementMode": {
+            "$ref": "#/components/schemas/SensorHeadMeasurementMode"
+          },
+          "serialNumber": {
+            "type": "string"
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/DeviceType"
+          },
+          "relationRoot": {
+            "type": "string"
+          },
+          "relationPath": {
+            "type": "string"
+          },
+          "organizationId": {
+            "type": "string"
+          },
+          "pumpId": {
+            "type": "string"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/IRevisionData"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "firstDataReceived": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "description": "Make all properties in T optional"
+      },
+      "CertificateStatus": {
+        "enum": [
+          "ACTIVE",
+          "INACTIVE",
+          "REVOKED",
+          "PENDING_TRANSFER",
+          "REGISTER_INACTIVE",
+          "PENDING_ACTIVATION"
+        ],
+        "type": "string"
+      },
+      "ICertificateData": {
+        "properties": {
+          "certificateStatus": {
+            "$ref": "#/components/schemas/CertificateStatus"
+          },
+          "certificateId": {
+            "type": "string"
+          },
+          "certificateArn": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "certificateStatus",
+          "certificateId",
+          "certificateArn"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "SensorMountingInfoStrings": {
+        "type": "string",
+        "enum": [
+          "MOUNTING_ADAPTER",
+          "MOUNTING_GLUE",
+          "MOUNTING_GLUEPAD",
+          "MOUNTING_MAGNET",
+          "UNKNOWN"
+        ],
+        "nullable": false
+      },
+      "SensorAccelerationRange": {
+        "enum": [
+          "ADXL356_10G",
+          "ADXL356_20G",
+          "ADXL356_40G",
+          "SPH645LM"
+        ],
+        "type": "string"
+      },
+      "PartialGuardSensorHead": {
+        "properties": {
+          "certificateData": {
+            "$ref": "#/components/schemas/ICertificateData"
+          },
+          "firstDataReceived": {
+            "type": "string"
+          },
+          "MeanCutOffBottom": {
+            "type": "number",
+            "format": "double"
+          },
+          "MeanCutOffTop": {
+            "type": "number",
+            "format": "double"
+          },
+          "revisionUpdatedAt": {
+            "type": "string"
+          },
+          "searchWindowWidth": {
+            "type": "number",
+            "format": "double"
+          },
+          "sensorMountingInfo": {
+            "$ref": "#/components/schemas/SensorMountingInfoStrings"
+          },
+          "sensorAccelerationRange": {
+            "$ref": "#/components/schemas/SensorAccelerationRange"
+          },
+          "serialNumber": {
+            "type": "string"
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/DeviceType"
+          },
+          "relationRoot": {
+            "type": "string"
+          },
+          "relationPath": {
+            "type": "string"
+          },
+          "organizationId": {
+            "type": "string"
+          },
+          "pumpId": {
+            "type": "string"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/IRevisionData"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "description": "Make all properties in T optional"
+      },
+      "PartialDevice": {
+        "properties": {
+          "serialNumber": {
+            "type": "string"
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/DeviceType"
+          },
+          "relationRoot": {
+            "type": "string"
+          },
+          "relationPath": {
+            "type": "string"
+          },
+          "organizationId": {
+            "type": "string"
+          },
+          "pumpId": {
+            "type": "string"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/IRevisionData"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "firstDataReceived": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "description": "Make all properties in T optional"
+      },
+      "PutAssignDeviceOrganizationResponse": {
+        "properties": {
+          "devices": {
+            "items": {
+              "$ref": "#/components/schemas/IDeviceObjectResponse"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "devices"
+        ],
+        "type": "object"
+      }
+    },
+    "responses": {},
+    "parameters": {},
+    "examples": {},
+    "requestBodies": {},
+    "headers": {},
+    "securitySchemes": {
+      "KsbUserPool": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "x-amazon-apigateway-authtype": "cognito_user_pools",
+        "x-amazon-apigateway-authorizer": {
+          "type": "cognito_user_pools",
+          "providerARNs": [
+            {
+              "Fn::Sub": "${KsbUserPoolArn}"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "x-amazon-apigateway-request-validators": {
+    "all": {
+      "validateRequestBody": true,
+      "validateRequestParameters": true
+    },
+    "params-only": {
+      "validateRequestBody": false,
+      "validateRequestParameters": true
+    }
+  },
+  "x-amazon-apigateway-gateway-responses": {
+    "DEFAULT_4XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": {
+          "Fn::Sub": "'${AllowedOrigin}'"
+        }
+      }
+    },
+    "DEFAULT_5XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": {
+          "Fn::Sub": "'${AllowedOrigin}'"
+        }
+      }
+    }
+  },
+  "x-amazon-apigateway-request-validator": "params-only"
+}
